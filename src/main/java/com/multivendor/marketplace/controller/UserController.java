@@ -1,5 +1,6 @@
 package com.multivendor.marketplace.controller;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,8 +19,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multivendor.marketplace.model.Role;
 import com.multivendor.marketplace.model.User;
 import com.multivendor.marketplace.repository.RoleRepository;
@@ -44,14 +50,22 @@ public class UserController {
     private String default_role = "USER";
     
     @PostMapping("/register")
-    public ResponseEntity<String> resgisterUser(@RequestBody User user){
+    public ResponseEntity<String> resgisterUser(@RequestParam("file") MultipartFile profilePicture,String user) throws IOException{
 
-        log.info("User {}",user);
+        log.info("/POST : saving user");
 
-        User found = this.userService.getUserByEmail(user.getEmail());
+        User n_user = new User();
+        ObjectMapper objectMapper = new ObjectMapper();
+        n_user = objectMapper.readValue(user, User.class);
+
+
+        n_user.setProfilePicture(profilePicture.getBytes());
+        User found = this.userService.getUserByEmail(n_user.getEmail());
         Role role = this.roleService.getRoleByName(default_role);
+        
+
         if (found!=null){
-            log.error("User Already Found with given Email: {}",user.getEmail());
+            log.error("User Already Found with given Email: {}",n_user.getEmail());
             return ResponseEntity.badRequest().body("User already exist with given email");
         }
         if(role==null){
@@ -59,8 +73,8 @@ public class UserController {
             return ResponseEntity.badRequest().body("Role Error");
         }        
         
-            log.info("Requesting the User Creation with email {}",user.getEmail());
-            this.userService.createUser(user, role);
+            log.info("Requesting the User Creation with email {}",n_user.getEmail());
+            this.userService.createUser(n_user, role);
             return ResponseEntity.status(200).body("Success Fully created.");
         
     }

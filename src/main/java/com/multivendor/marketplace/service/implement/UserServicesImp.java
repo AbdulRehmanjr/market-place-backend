@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.multivendor.marketplace.model.Role;
@@ -26,8 +27,8 @@ public class UserServicesImp implements UserService {
     @Autowired
     private UserRepository userRepo;
 
-    // @Autowired
-    // private PasswordEncoder encoder;
+    @Autowired
+    private PasswordEncoder encoder;
 
     @Override
     public User createUser(User user,Role role){
@@ -37,7 +38,9 @@ public class UserServicesImp implements UserService {
 
         log.info("Saving the User with Id {}",randomUserId);
 
+        user.setPassword(encoder.encode(user.getPassword()));
         user.setRole(role);
+        
 
         return this.userRepo.save(user);
     }

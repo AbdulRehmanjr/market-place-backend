@@ -2,6 +2,7 @@ package com.multivendor.marketplace.model;
 
 import java.util.Arrays;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
@@ -17,9 +18,10 @@ public class User {
     private String userId;
     private String userName;
     private String email;
-    private String userPassword;
+    private String password;
 
     @Lob
+    @Column(columnDefinition="LONGBLOB")
     private byte[] profilePicture;
     
     @ManyToOne
@@ -43,11 +45,11 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public String getUserPassword() {
-        return userPassword;
+    public String getPassword() {
+        return password;
     }
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
     public Role getRole() {
         return role;
@@ -63,8 +65,8 @@ public class User {
     }
     @Override
     public String toString() {
-        return "User [userId=" + userId + ", userName=" + userName + ", email=" + email + ", userPassword="
-                + userPassword + ", profilePicture=" + Arrays.toString(profilePicture) + ", role=" + role + "]";
+        return "User [userId=" + userId + ", userName=" + userName + ", email=" + email + ", password="
+                + password + ", profilePicture=" + Arrays.toString(profilePicture) + ", role=" + role + "]";
     }
 
    

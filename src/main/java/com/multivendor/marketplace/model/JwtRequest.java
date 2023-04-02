@@ -1,11 +1,11 @@
 package com.multivendor.marketplace.model;
 
 public class JwtRequest {
-    private String userEmail;
+    private String email;
     private String password;
 
-    public JwtRequest(String userEmail, String password) {
-        this.userEmail = userEmail;
+    public JwtRequest(String email, String password) {
+        this.email = email;
         this.password = password;
     }
     
@@ -15,14 +15,14 @@ public class JwtRequest {
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getUserEmail() {
-        return userEmail;
+    public String getemail() {
+        return email;
     }
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setemail(String email) {
+        this.email = email;
     }
     @Override
     public String toString() {
-        return "JwtRequest [userEmail=" + userEmail + ", password=" + password + "]";
+        return "JwtRequest [email=" + email + ", password=" + password + "]";
     }
 }

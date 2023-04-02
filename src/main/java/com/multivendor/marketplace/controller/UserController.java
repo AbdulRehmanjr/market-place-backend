@@ -54,12 +54,13 @@ public class UserController {
 
         log.info("/POST : saving user");
 
+        log.info("USER {}",user);
         User n_user = new User();
         ObjectMapper objectMapper = new ObjectMapper();
         n_user = objectMapper.readValue(user, User.class);
 
 
-        n_user.setProfilePicture(profilePicture.getBytes());
+        log.info("Object Mapper {}",n_user);        
         User found = this.userService.getUserByEmail(n_user.getEmail());
         Role role = this.roleService.getRoleByName(default_role);
         
@@ -72,8 +73,10 @@ public class UserController {
             log.error("User Creation Error. Role not found.");
             return ResponseEntity.badRequest().body("Role Error");
         }        
-        
+        log.info("File Name: {} and size {}",profilePicture.getOriginalFilename(),profilePicture.getSize());
+        n_user.setProfilePicture(profilePicture.getBytes());
             log.info("Requesting the User Creation with email {}",n_user.getEmail());
+           
             this.userService.createUser(n_user, role);
             return ResponseEntity.status(200).body("Success Fully created.");
         

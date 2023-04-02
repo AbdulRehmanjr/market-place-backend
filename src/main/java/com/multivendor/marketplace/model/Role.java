@@ -5,15 +5,12 @@ package com.multivendor.marketplace.model;
 import java.util.HashSet;
 import java.util.Set;
 
-
+import org.springframework.security.core.GrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -23,7 +20,7 @@ import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "ROLETABLE")
-public class Role {
+public class Role implements GrantedAuthority{
 
     @Id
     private String roleId;
@@ -50,6 +47,11 @@ public class Role {
     @Override
     public String toString() {
         return "Role [roleId=" + roleId + ", roleName=" + roleName + "]";
+    }
+    @Override
+    public String getAuthority() {
+        
+        return this.getRoleName();
     }
 
 }

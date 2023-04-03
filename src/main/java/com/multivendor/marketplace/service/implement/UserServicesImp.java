@@ -46,6 +46,14 @@ public class UserServicesImp implements UserService {
     }
 
     @Override
+    public User getUserById(String userId) {
+        log.info("Finding user with id {}",userId);
+        
+        return this.userRepo.findById(userId).get();
+    }
+
+
+    @Override
     public List<User> getAllUserByUserName(String userName){
 
         log.info("Getting all Users with given userName: {}",userName);
@@ -74,6 +82,7 @@ public class UserServicesImp implements UserService {
         return this.userRepo.findByEmail(email);
     }
 
+   
 
     
 }

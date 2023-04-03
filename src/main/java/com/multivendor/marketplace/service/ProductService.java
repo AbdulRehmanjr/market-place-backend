@@ -4,10 +4,6 @@ import java.util.List;
 
 import com.multivendor.marketplace.model.Product;
 
-
-
-
-
 public interface ProductService {
     
     public  Product addProduct(Product Product);

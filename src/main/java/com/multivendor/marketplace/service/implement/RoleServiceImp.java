@@ -2,6 +2,7 @@ package com.multivendor.marketplace.service.implement;
 
 
 
+import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -40,12 +41,19 @@ public class RoleServiceImp implements RoleService {
     }
 
     @Override
+    public List<Role> getAllRoles() {
+     log.info("fetching all rles form database");
+        return this.roleRepo.findAll();
+    }
+    @Override
     public Role getRoleByName(String name) {
         
         log.info("Getting the Role {} from database",name);
         Role role = this.roleRepo.findByRoleName(name);
         return role;
     }
+
+ 
 
     
 }

@@ -82,6 +82,25 @@ public class UserServicesImp implements UserService {
         return this.userRepo.findByEmail(email);
     }
 
+    @Override
+    public void followUser(String followBy, String followedId) {
+
+        log.info("User Id {} Followed By {}",followedId,followBy);
+
+        User user = this.userRepo.findById(followBy).get();
+        User followedUser = this.userRepo.findById(followedId).get();
+        // if (user.equals(followedUser)) {
+        //     return ResponseEntity.badRequest().body("You cannot follow yourself");
+        // }
+        // user.getFollowing().add(followedUser);
+        // followedUser.getFollowers().add(user);
+        this.userRepo.save(user);
+        this.userRepo.save(followedUser);
+        
+
+
+    }
+
    
 
     

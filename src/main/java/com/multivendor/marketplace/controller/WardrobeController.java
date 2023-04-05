@@ -1,8 +1,11 @@
 package com.multivendor.marketplace.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +33,10 @@ public class WardrobeController {
     private UserService userSeriService;
 
 
+    /**
+     * @param wardrobe
+     * @return {@message}
+     */
     @PostMapping("/create")
     public ResponseEntity<String> saveWardrobe(@RequestBody Wardrobe wardrobe){
 
@@ -51,5 +58,20 @@ public class WardrobeController {
             return ResponseEntity.badRequest().body("Wardrobe Creation Error");
         }
         return ResponseEntity.status(201).body("Created Successfully");
+    }
+
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllWarrobe()
+    {
+        log.info("Fetching all wardrobe list");
+
+        List<Wardrobe> wardrobes = this.wardrobeService.getAllWardrobe();
+
+        if(wardrobes==null){
+            return ResponseEntity.badRequest().body("Error in fetching the wardrobe");
+        }
+
+        return ResponseEntity.status(200).body(wardrobes);
     }
 }

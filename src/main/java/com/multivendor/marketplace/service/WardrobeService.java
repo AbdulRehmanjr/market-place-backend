@@ -8,6 +8,8 @@ public interface WardrobeService {
     
     Wardrobe createWardrobe(Wardrobe wardrobe);
 
+    Wardrobe getWardrobeById(String id);
+    
     Wardrobe getByUserIdandWardrobeName(String userId,String title);
 
     List<Wardrobe> getWardrobeByUserId(String userId);

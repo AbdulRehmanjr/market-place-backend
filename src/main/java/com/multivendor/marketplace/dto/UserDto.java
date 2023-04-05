@@ -1,6 +1,9 @@
 package com.multivendor.marketplace.dto;
 
+import java.util.Set;
+
 import com.multivendor.marketplace.model.Role;
+import com.multivendor.marketplace.model.User;
 
 public class UserDto {
     
@@ -11,6 +14,10 @@ public class UserDto {
     private String profilePicture;
 
     private Role role;
+
+    // private Set<User> following;
+
+    // private Set<User> followers;
 
     public UserDto(String userId, String userName, String email, String profilePicture, Role role) {
         this.userId = userId;

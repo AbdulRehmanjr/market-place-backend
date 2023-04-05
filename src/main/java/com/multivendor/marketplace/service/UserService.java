@@ -11,18 +11,20 @@ import com.multivendor.marketplace.model.User;
 public interface UserService {
     
     // create a new user
-    public User createUser(User user,Role role);
+     User createUser(User user,Role role);
 
-    public List<User> getAllUserByUserName(String userName);
+     List<User> getAllUserByUserName(String userName);
 
-    public User getUserById(String userId);
+    void followUser(String followBy,String followedId);
+
+     User getUserById(String userId);
 
     //  get by email 
-    public User getUserByEmail(String email);
+     User getUserByEmail(String email);
 
     // delete by id
-    public void deleteUser(String id);
+     void deleteUser(String id);
     
     // public void getall
-    public List<User> getAllUsers();
+     List<User> getAllUsers();
 }

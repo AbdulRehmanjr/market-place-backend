@@ -36,6 +36,14 @@ public class WardrobeServiceImpl  implements WardrobeService{
     }
 
     @Override
+    public Wardrobe getWardrobeById(String id) {
+        log.info("Getting wardrobe by id {} from database" ,id);
+
+        return this.wardrobeRepository.findById(id).get();
+    }
+
+ 
+    @Override
     public Wardrobe getByUserIdandWardrobeName(String userId, String title) {
         
         log.info("Finding by userId and wardrobe title");
@@ -45,14 +53,14 @@ public class WardrobeServiceImpl  implements WardrobeService{
     
     @Override
     public List<Wardrobe> getWardrobeByUserId(String userId) {
-    
-        return null;
+        log.info("Finding wardrobe by userId");
+        return this.wardrobeRepository.findAll();
     }
 
     @Override
     public List<Wardrobe> getAllWardrobe() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllWardrobe'");
+        log.info("Fetching all wardrobes");
+        return this.wardrobeRepository.findAll();
     }
 
     @Override
@@ -67,6 +75,6 @@ public class WardrobeServiceImpl  implements WardrobeService{
         throw new UnsupportedOperationException("Unimplemented method 'updatWardrobe'");
     }
 
- 
+
     
 }

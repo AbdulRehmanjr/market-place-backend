@@ -1,8 +1,11 @@
 package com.multivendor.marketplace.controller;
 
 import java.io.IOException;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -26,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.multivendor.marketplace.dto.UserDto;
 import com.multivendor.marketplace.model.Role;
 import com.multivendor.marketplace.model.User;
 import com.multivendor.marketplace.repository.RoleRepository;
@@ -76,29 +80,70 @@ public class UserController {
         log.info("File Name: {} and size {}",profilePicture.getOriginalFilename(),profilePicture.getSize());
         n_user.setProfilePicture(profilePicture.getBytes());
             log.info("Requesting the User Creation with email {}",n_user.getEmail());
-           
+
             this.userService.createUser(n_user, role);
             return ResponseEntity.status(200).body("Success Fully created.");
         
     }
 
-    @GetMapping("/{username}")
-    public List<User> getuser(@PathVariable("userName") String username){
+    @PostMapping("/{userId}/follow/{followedId}")
+    ResponseEntity<?> makefollow(@PathVariable String userId,@PathVariable String followedId){
 
-        List<User> result = this.userService.getAllUserByUserName(username);
+        log.info("Following User");
+        this.userService.followUser(userId, followedId);
+        return ResponseEntity.status(200).body("User followed SucessFully");
+    }
+
+    // @GetMapping("/{username}")
+    // public List<User> getUserByName(@PathVariable("userName") String username){
+
+    //     List<User> result = this.userService.getAllUserByUserName(username);
+
+    //     if(result == null){
+    //         log.error("Users not found");
+    //         return null;
+    //     }
+    //     log.info("User Found." );
+    //     return result;
+        
+    // }
+//     @GetMapping("/{userId}/info")
+// public ResponseEntity<Map<String, Object>> getUserFollowInfo(@PathVariable String userId) {
+//     User user = this.userService.getUserById(userId);
+
+//     if (user!=null) {
+//         Set<User> followers = user.getFollowers();
+//         Set<User> following = user.getFollowing();
+
+//         Map<String, Object> response = new HashMap<>();
+//         response.put("user", user.toString());
+//         response.put("followers", followers);
+//         response.put("following", following);
+
+//         return ResponseEntity.ok(response);
+//     } else {
+//         return ResponseEntity.notFound().build();
+//     }
+// }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserById(@PathVariable("userId") String userId){
+
+        User result = this.userService.getUserById(userId);
 
         if(result == null){
             log.error("Users not found");
-            return null;
+            return ResponseEntity.badRequest().body("User not found");
         }
         log.info("User Found." );
-        return result;
+
+        UserDto user = new UserDto(result.getUserId(),result.getUserName(),result.getEmail(),Base64.getEncoder().encodeToString(result.getProfilePicture()),result.getRole());
+        return ResponseEntity.status(200).body(user);
         
     }
-    
     @GetMapping("/all")
     List<User> Allusers(){
-
+        log.info("Geting all users");
         return this.userService.getAllUsers();
     }
     // delete user

@@ -2,17 +2,19 @@ package com.multivendor.marketplace.model;
 
 import java.util.Arrays;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="PRODUCTTABLE")
+@Table(name = "PRODUCTTABLE")
 public class Product {
-    
+
     @Id
     private String productId;
 
@@ -23,7 +25,7 @@ public class Product {
     @Lob
     @Column(length = 10240)
     private byte[] image1;
-    
+
     @Lob
     @Column(length = 10240)
     private byte[] image2;
@@ -32,11 +34,12 @@ public class Product {
 
     private Double reviews = 0.0;
 
-
     @ManyToOne
     private Category category;
 
-    
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Wardrobe wardrobe;
+
     public Double getReviews() {
         return reviews;
     }
@@ -44,8 +47,6 @@ public class Product {
     public void setReviews(Double reviews) {
         this.reviews = reviews;
     }
-
-    
 
     public String getProductId() {
         return productId;
@@ -103,11 +104,20 @@ public class Product {
         this.image2 = image2;
     }
 
+
+    public Wardrobe getWardrobe() {
+        return wardrobe;
+    }
+
+    public void setWardrobe(Wardrobe wardrobe) {
+        this.wardrobe = wardrobe;
+    }
+
     @Override
     public String toString() {
         return "Product [productId=" + productId + ", productName=" + productName + ", basePrice=" + basePrice
                 + ", image1=" + Arrays.toString(image1) + ", image2=" + Arrays.toString(image2) + ", description="
-                + description + ", reviews=" + reviews + ", category=" + category + "]";
+                + description + ", reviews=" + reviews + ", category=" + category + ", wardrobe=" + wardrobe + "]";
     }
 
 }

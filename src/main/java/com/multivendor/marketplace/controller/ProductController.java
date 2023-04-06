@@ -1,12 +1,18 @@
 package com.multivendor.marketplace.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,5 +51,47 @@ public class ProductController {
         return ResponseEntity.badRequest().body("Error in saving the product");
     } 
     return ResponseEntity.status(200).body("Product saved successfully");
+    }
+
+    // getting all products
+
+    @GetMapping("/all")
+    ResponseEntity<?> fetchAllProducts(){
+
+        log.info(" GET: Getting all products");
+
+        List<Product> products = this.productService.getAllProducts();
+
+        if(products == null){
+            return ResponseEntity.badRequest().body("PRoducts Fetching error");
+        }        
+        return ResponseEntity.status(200).body(products);
+    }
+
+    @GetMapping("/{productId}")
+    ResponseEntity<?> fetchOneById(@PathVariable String productId){
+
+        log.info("GET : get one product by id : {}",productId);
+
+        Product product = this.productService.getProductById(productId);
+
+        if(product ==null){
+            return ResponseEntity.badRequest().body("Error in fetching.");
+        }
+
+        return ResponseEntity.status(200).body(product);
+    }
+
+    @PutMapping("/update")
+    ResponseEntity<?> updateProduct(@RequestBody Product product){
+
+        log.info("GET : get one product by id : {}",product.getProductId());
+
+        Product updated = this.productService.updateProduct(product);
+
+        if(updated == null){
+            return ResponseEntity.badRequest().body("Error product not found");
+        }
+        return ResponseEntity.status(200).body(updated);
     }
 }

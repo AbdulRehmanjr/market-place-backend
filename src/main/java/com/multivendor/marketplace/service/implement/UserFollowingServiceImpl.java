@@ -65,7 +65,7 @@ public class UserFollowingServiceImpl implements UserFollowingService {
     }
 
     @Override
-    public List<User> fetchAllFollowers(String userId) {
+    public List<User> fetchAllFollowings(String userId) {
 
         List<User> users = new ArrayList<>();
 

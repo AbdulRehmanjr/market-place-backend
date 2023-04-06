@@ -3,11 +3,14 @@ package com.multivendor.marketplace.model;
 
 
 
+import java.util.Set;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +26,9 @@ public class Wardrobe {
     
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private User user;
+
+    @OneToMany
+    private Set<Product> products;
 
     public String getId() {
         return id;

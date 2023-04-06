@@ -39,7 +39,8 @@ public class User {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Wardrobe> wardrobes = new HashSet<>();
 
     @OneToMany(mappedBy = "following")

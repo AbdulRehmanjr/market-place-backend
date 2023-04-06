@@ -10,5 +10,5 @@ public interface UserFollowingService  {
 
     void unfollowUser(String userId,String followingId);
 
-    List<User> fetchAllFollowers(String userId);
+    List<User> fetchAllFollowings(String userId);
 }

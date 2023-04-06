@@ -42,10 +42,9 @@ public class UserFollowingController {
 
     @GetMapping("/user/{userId}")
     ResponseEntity<?> getAllFollowing(@PathVariable String userId) {
-        log.info("/POST : making follow request");
+        log.info("/GET : get all following");
 
-        
-        List<User> users =     this.ufs.fetchAllFollowers(userId);
+        List<User> users =     this.ufs.fetchAllFollowings(userId);
         
         if(users == null){
             return ResponseEntity.status(200).body("No following found.");

@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.multivendor.marketplace.model.Category;
 import com.multivendor.marketplace.model.Product;
+import com.multivendor.marketplace.model.Wardrobe;
 import com.multivendor.marketplace.repository.CategoryRepository;
 import com.multivendor.marketplace.repository.ProductRepository;
+import com.multivendor.marketplace.repository.WardrobeRepository;
 import com.multivendor.marketplace.service.ProductService;
 
 @Service
@@ -25,6 +27,9 @@ public class ProductServiceImp implements ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private WardrobeRepository wardrobeRepository;
+
     @Override
     public Product addProduct(Product product) {
 
@@ -32,11 +37,13 @@ public class ProductServiceImp implements ProductService {
 
         Category category = this.categoryRepository.findById(product.getCategory().getCategoryId()).get();
 
+        Wardrobe wardrobe = this.wardrobeRepository.findById(product.
+        getWardrobe().getId()).get();
         String id = UUID.randomUUID().toString();
 
         product.setProductId(id);
-        if (category == null) {
-            log.error("Product Saing Error. Category Not Found.");
+        if (category == null || wardrobe == null) {
+            log.error("Product Saving Error");
             return null;
         }
 
@@ -44,9 +51,27 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product Product) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateProduct'");
+    public Product updateProduct(Product product) {
+
+        log.info("Updating the product");
+        Product old = this.productRepository.findById(product.getProductId()).get();
+
+        if(product.getBasePrice()!=null){
+            old.setBasePrice(product.getBasePrice());
+        }
+
+        if(product.getDescription()!=null){
+            old.setDescription(product.getDescription());
+        }
+        if(product.getReviews()!=null){
+            old.setReviews(product.getReviews());
+        }
+        if(old==null){
+            log.info("Product not Found");
+            return null;
+        }
+
+        return this.productRepository.save(old);
     }
 
     @Override
@@ -63,6 +88,7 @@ public class ProductServiceImp implements ProductService {
         
         List<Product> products = this.productRepository.findByCategory(category);
 
+
         if (products == null) {
             log.error("No product with given category");
             return null;
@@ -72,7 +98,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<Product> getAllByProducts() {
+    public List<Product> getAllProducts() {
 
         log.info("Geting all Products");
         

@@ -26,11 +26,13 @@ public class WardrobeServiceImpl  implements WardrobeService{
       log.info("Saving wardrobe in database");
 
       Wardrobe result = this.getByUserIdandWardrobeName(wardrobe.getUser().getUserId(), wardrobe.getTitle());
+      log.info("Wardrobe {}",result);
       if(result!=null){
         return null;
       }
       String id = UUID.randomUUID().toString();
       wardrobe.setId(id);
+      log.info("wardrobe to be save {}",wardrobe);
       
       return this.wardrobeRepository.save(wardrobe);
     }

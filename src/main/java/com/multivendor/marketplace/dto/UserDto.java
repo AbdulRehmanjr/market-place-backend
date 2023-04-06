@@ -1,5 +1,6 @@
 package com.multivendor.marketplace.dto;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import com.multivendor.marketplace.model.Role;
@@ -11,7 +12,7 @@ public class UserDto {
     private String userId;
     private String userName;
     private String email;
-    private String profilePicture;
+    private byte[] profilePicture;
 
     private Role role;
 
@@ -19,7 +20,7 @@ public class UserDto {
 
     // private Set<User> followers;
 
-    public UserDto(String userId, String userName, String email, String profilePicture, Role role) {
+    public UserDto(String userId, String userName, String email, byte[] profilePicture, Role role) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
@@ -59,11 +60,11 @@ public class UserDto {
         this.email = email;
     }
 
-    public String getProfilePicture() {
+    public byte[] getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
     }
 
@@ -78,6 +79,8 @@ public class UserDto {
     @Override
     public String toString() {
         return "UserDto [userId=" + userId + ", userName=" + userName + ", email=" + email + ", profilePicture="
-                + profilePicture + ", role=" + role + "]";
+                + Arrays.toString(profilePicture) + ", role=" + role + "]";
     }
+
+
 }

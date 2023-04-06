@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,6 @@ public class WardrobeController {
     @Autowired
     private UserService userSeriService;
 
-
     /**
      * @param wardrobe
      * @return {@message}
@@ -40,7 +40,7 @@ public class WardrobeController {
     @PostMapping("/create")
     public ResponseEntity<String> saveWardrobe(@RequestBody Wardrobe wardrobe){
 
-        log.info("Processing the wardrobe.");
+        log.info("Processing the wardrobe. {}",wardrobe.getUser().getUserId());
         
         User user = this.userSeriService.getUserById(wardrobe.getUser().getUserId());
 
@@ -53,13 +53,26 @@ public class WardrobeController {
         user2.setUserName(user.getUserName());
         wardrobe.setUser(user2);
         var result = this.wardrobeService.createWardrobe(wardrobe);
-
+        
         if(result == null){
             return ResponseEntity.badRequest().body("Wardrobe Creation Error");
         }
         return ResponseEntity.status(201).body("Created Successfully");
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getAllWarrobesByUserId(@PathVariable String userId)
+    {
+        log.info("Fetching all wardrobe by user");
+
+        List<Wardrobe> wardrobes = this.wardrobeService.getWardrobeByUserId(userId);
+
+        if(wardrobes==null){
+            return ResponseEntity.badRequest().body("Error in fetching the wardrobe");
+        }
+
+        return ResponseEntity.status(200).body(wardrobes);
+    }
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllWarrobe()

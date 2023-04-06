@@ -137,7 +137,7 @@ public class UserController {
         }
         log.info("User Found." );
 
-        UserDto user = new UserDto(result.getUserId(),result.getUserName(),result.getEmail(),Base64.getEncoder().encodeToString(result.getProfilePicture()),result.getRole());
+        UserDto user = new UserDto(result.getUserId(),result.getUserName(),result.getEmail(),result.getProfilePicture(),result.getRole());
         return ResponseEntity.status(200).body(user);
         
     }

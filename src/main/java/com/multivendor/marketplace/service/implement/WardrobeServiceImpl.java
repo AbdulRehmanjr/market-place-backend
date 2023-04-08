@@ -56,7 +56,7 @@ public class WardrobeServiceImpl  implements WardrobeService{
     @Override
     public List<Wardrobe> getWardrobeByUserId(String userId) {
         log.info("Finding wardrobe by userId");
-        return this.wardrobeRepository.findAll();
+        return this.wardrobeRepository.findAllByUserUserId(userId);
     }
 
     @Override
@@ -66,9 +66,15 @@ public class WardrobeServiceImpl  implements WardrobeService{
     }
 
     @Override
-    public void deleteWardrobe() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteWardrobe'");
+    public void deleteWardrobe(String id) {
+
+        log.info("deleting the wardrobe from database");
+        Wardrobe found = this.wardrobeRepository.findById(id).get();
+
+        if(found == null){
+            log.error("No wardrobe found with given id {}",id);
+        }
+        this.wardrobeRepository.delete(found);
     }
 
     @Override

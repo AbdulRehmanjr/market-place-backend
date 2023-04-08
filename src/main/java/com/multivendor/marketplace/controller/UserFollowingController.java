@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.multivendor.marketplace.model.User;
-import com.multivendor.marketplace.service.UserFollowerService;
 import com.multivendor.marketplace.service.UserFollowingService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,21 +25,18 @@ public class UserFollowingController {
     @Autowired
     private UserFollowingService ufs;
 
-    @PostMapping("/user/{userId}/follow/{followingId}")
-    ResponseEntity<?> followUser(@PathVariable String userId,@PathVariable String followingId) {
+    @PostMapping("/user/{currentId}/follow/{userId}")
+    ResponseEntity<?> followUser(@PathVariable String currentId,@PathVariable String userId) {
 
         log.info("/POST : making follow request");
 
-        try {
-            this.ufs.followUser(userId, followingId);
-        } catch (Exception e) {
-            log.error("Error {}", e.getMessage());
-            return ResponseEntity.badRequest().body("Error in following");
-        }
+       
+            this.ufs.followUser(currentId,userId);
+       
         return ResponseEntity.status(200).body("Followed");
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/following/{userId}")
     ResponseEntity<?> getAllFollowing(@PathVariable String userId) {
         log.info("/GET : get all following");
 
@@ -48,6 +44,18 @@ public class UserFollowingController {
         
         if(users == null){
             return ResponseEntity.status(200).body("No following found.");
+        }
+        return ResponseEntity.status(200).body(users);
+    }
+
+    @GetMapping("/user/follower/{userId}")
+    ResponseEntity<?> getAllFollower(@PathVariable String userId) {
+        log.info("/GET : get all followers");
+
+        List<User> users = this.ufs.fetchAllFollowers(userId);     
+        if(users == null){
+            log.info("Error no follower found");
+            return ResponseEntity.status(200).body("No follower found.");
         }
         return ResponseEntity.status(200).body(users);
     }

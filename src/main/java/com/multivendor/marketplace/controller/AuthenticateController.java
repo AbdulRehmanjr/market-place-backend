@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.multivendor.marketplace.config.jwt.JwtUtil;
+import com.multivendor.marketplace.dto.UserDto;
 import com.multivendor.marketplace.model.JwtRequest;
 import com.multivendor.marketplace.model.JwtResponse;
 import com.multivendor.marketplace.model.User;
@@ -86,10 +87,13 @@ public class AuthenticateController {
     }
 
     @PostMapping("/current-user")
-    public User getCurrentUser(@RequestBody JwtRequest request){
+    public UserDto getCurrentUser(@RequestBody JwtRequest request){
         log.info("calling current user");
         User user = this.userService.getUserByEmail(request.getemail());
+        UserDto  dto = new UserDto(user.getUserId(),user.getUserName(),user.getEmail(),user.getProfilePicture(),user.getRole());
+        
         log.info("USER {}",user);
-        return user;
+
+        return dto;
     }
 }

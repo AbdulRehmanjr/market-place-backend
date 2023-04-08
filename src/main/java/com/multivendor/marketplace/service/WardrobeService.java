@@ -16,7 +16,7 @@ public interface WardrobeService {
 
     List<Wardrobe> getAllWardrobe();
 
-    void deleteWardrobe();
+    void deleteWardrobe(String id);
 
     Wardrobe updatWardrobe(Wardrobe wardrobes);
 }

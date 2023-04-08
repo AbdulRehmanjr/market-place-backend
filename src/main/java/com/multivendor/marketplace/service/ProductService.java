@@ -16,6 +16,8 @@ public interface ProductService {
 
     public Product getProductById(String id);
 
+    List<Product> getAllProductsByWardrobeId(String wardrobeId);
+
     public List<Product> getProductByName(String title);
     
     public void deleteProduct(String id);

@@ -3,12 +3,14 @@ package com.multivendor.marketplace.service;
 import java.util.List;
 
 import com.multivendor.marketplace.model.User;
-import com.multivendor.marketplace.model.UserFollowing;
 
 public interface UserFollowingService  {
-    void followUser(String userId,String followingId) throws Exception;
 
-    void unfollowUser(String userId,String followingId);
+    void followUser(String currentId,String userId) ;
+
+    void unfollowUser(String currentId,String userId);
 
     List<User> fetchAllFollowings(String userId);
+
+    List<User> fetchAllFollowers(String userId);
 }

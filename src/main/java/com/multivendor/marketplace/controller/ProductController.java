@@ -81,6 +81,19 @@ public class ProductController {
 
         return ResponseEntity.status(200).body(product);
     }
+    @GetMapping("/wardrobe/{wardrobeId}")
+    ResponseEntity<?> getAllProductsByWardrobeId(@PathVariable String wardrobeId){
+
+        log.info("GET : fetchinfg all product by  wardrobe id {}",wardrobeId);
+
+        List<Product> products = this.productService.getAllProductsByWardrobeId(wardrobeId);
+
+        if(products == null){
+            log.error("Products not found");
+            return ResponseEntity.badRequest().body("Error");
+        }
+        return ResponseEntity.status(200).body(products);
+    }
 
     @PutMapping("/update")
     ResponseEntity<?> updateProduct(@RequestBody Product product){

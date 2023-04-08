@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,7 +64,7 @@ public class WardrobeController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getAllWarrobesByUserId(@PathVariable String userId)
     {
-        log.info("Fetching all wardrobe by user");
+        log.info("Fetching all wardrobe by user id {}", userId);
 
         List<Wardrobe> wardrobes = this.wardrobeService.getWardrobeByUserId(userId);
 
@@ -86,5 +87,11 @@ public class WardrobeController {
         }
 
         return ResponseEntity.status(200).body(wardrobes);
+    }
+
+    @DeleteMapping("/{wardrobeId}")
+    void deleteWardrobe(@PathVariable String wardrobeId){
+        log.info("Deleting the wardrobe");
+        this.wardrobeService.deleteWardrobe(wardrobeId);
     }
 }

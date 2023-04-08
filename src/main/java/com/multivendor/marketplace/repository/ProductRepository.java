@@ -11,7 +11,9 @@ import com.multivendor.marketplace.model.Product;
 
 public interface ProductRepository  extends JpaRepository<Product,String>{
         
-    public List<Product> findByCategory(Category category);
+    public List<Product> findAllByCategory(Category category);
 
-    public List<Product> findByProductName(String name);
+    public List<Product> findAllByProductName(String name);
+
+    List<Product> findAllByWardrobeId(String wardrobeId);
 }

@@ -19,6 +19,8 @@ public interface UserService {
 
      User getUserById(String userId);
 
+     List<User> getAllUsersByUserNameLike(String userNameLike);
+
     //  get by email 
      User getUserByEmail(String email);
 

@@ -94,19 +94,19 @@ public class UserController {
         return ResponseEntity.status(200).body("User followed SucessFully");
     }
 
-    // @GetMapping("/{username}")
-    // public List<User> getUserByName(@PathVariable("userName") String username){
+    @GetMapping("/all/{userName}")
+    public List<User> getUserByName(@PathVariable("userName") String username){
 
-    //     List<User> result = this.userService.getAllUserByUserName(username);
+        List<User> result = this.userService.getAllUsersByUserNameLike(username);
 
-    //     if(result == null){
-    //         log.error("Users not found");
-    //         return null;
-    //     }
-    //     log.info("User Found." );
-    //     return result;
+        if(result == null){
+            log.error("Users not found");
+            return null;
+        }
+        log.info("User Found." );
+        return result;
         
-    // }
+    }
 //     @GetMapping("/{userId}/info")
 // public ResponseEntity<Map<String, Object>> getUserFollowInfo(@PathVariable String userId) {
 //     User user = this.userService.getUserById(userId);

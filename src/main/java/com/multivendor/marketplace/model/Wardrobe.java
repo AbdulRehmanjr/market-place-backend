@@ -27,7 +27,7 @@ public class Wardrobe {
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private User user;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<Product> products;
 
     public String getId() {

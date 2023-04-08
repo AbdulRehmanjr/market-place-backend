@@ -51,7 +51,14 @@ public class UserServicesImp implements UserService {
         
         return this.userRepo.findById(userId).get();
     }
-
+    
+    @Override
+    public List<User> getAllUsersByUserNameLike(String userNameLike) {
+     
+        log.info("getAllUsersByUserNameLike");
+        
+        return this.userRepo.findByUserNameContains(userNameLike);
+    }
 
     @Override
     public List<User> getAllUserByUserName(String userName){
@@ -100,6 +107,7 @@ public class UserServicesImp implements UserService {
 
 
     }
+
 
    
 

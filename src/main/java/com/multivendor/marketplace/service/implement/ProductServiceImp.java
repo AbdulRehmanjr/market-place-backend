@@ -86,7 +86,7 @@ public class ProductServiceImp implements ProductService {
             return null;
         }
         
-        List<Product> products = this.productRepository.findByCategory(category);
+        List<Product> products = this.productRepository.findAllByCategory(category);
 
 
         if (products == null) {
@@ -130,7 +130,7 @@ public class ProductServiceImp implements ProductService {
     public List<Product> getProductByName(String title) {
         log.info("Getting Product by Name {}",title);
 
-        List<Product> products = this.productRepository.findByProductName(title);
+        List<Product> products = this.productRepository.findAllByProductName(title);
 
         if(products == null){
             log.error("Product not found");
@@ -143,6 +143,18 @@ public class ProductServiceImp implements ProductService {
     public void deleteProduct(String id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteProduct'");
+    }
+
+    @Override
+    public List<Product> getAllProductsByWardrobeId(String wardrobeId) {
+        List<Product> products = this.productRepository.findAllByWardrobeId(wardrobeId);
+
+        if(products==null){
+            log.error("No products found with given wardrobe");
+            return null;
+        }
+
+        return products;
     }
 
 }

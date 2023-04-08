@@ -37,8 +37,8 @@ public class Product {
     @ManyToOne
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Wardrobe wardrobe;
+    @ManyToOne
+        private Wardrobe wardrobe;
 
     public Double getReviews() {
         return reviews;

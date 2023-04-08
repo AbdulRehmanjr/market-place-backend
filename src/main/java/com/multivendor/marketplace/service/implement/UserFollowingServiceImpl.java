@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.multivendor.marketplace.model.User;
 import com.multivendor.marketplace.model.UserFollower;
 import com.multivendor.marketplace.model.UserFollowing;
+import com.multivendor.marketplace.repository.UserFollowerRepository;
 import com.multivendor.marketplace.repository.UserFollowingRepository;
 import com.multivendor.marketplace.repository.UserRepository;
 import com.multivendor.marketplace.service.UserFollowerService;
@@ -27,35 +28,44 @@ public class UserFollowingServiceImpl implements UserFollowingService {
     @Autowired
     private UserRepository userRepo;
 
+    @Autowired
+    private UserFollowerRepository ufrr;
+
     @Override
-    public void followUser(String userId,String followingId) throws Exception {
+    public void followUser(String currentId,String userId)   {
         
         log.info("Adding the follower  in database");
 
-        User user = this.userRepo.findById(userId).get();
+        User currentUser = this.userRepo.findById(currentId).get();
 
-        User follow = this.userRepo.findById(followingId).get();
+        User followingUser = this.userRepo.findById(userId).get();
 
-        if(user==null || follow ==null){
+        if(currentUser==null || followingUser ==null){
             log.error("Error user or follower not avaible");
-            throw  new Exception("User or Follower not found.");
         }
-
+        // {@current} user is follower of this
+        UserFollower ufr = new UserFollower();
+        // {@Current} user is following this 
         UserFollowing uf = new UserFollowing();
         
-        String id = UUID.randomUUID().toString();
-        uf.setId(id);
-        uf.setUser(user);
-        uf.setFollowing(follow);
-
-        this.ufr.save(uf);
+        String following = UUID.randomUUID().toString();
+        uf.setId(following);
+        uf.setUser(currentUser);
+        uf.setFollowing(followingUser);
+        
+        String follower = UUID.randomUUID().toString();
+        ufr.setId(follower);
+        ufr.setFollower(currentUser);
+        ufr.setUser(followingUser);
+        this.ufrr.save(ufr);
+        this.ufr.save(uf);  
     }
 
     @Override
-    public void unfollowUser(String userId,String followingId) {
+    public void unfollowUser(String currentId,String userId) {
         log.info("Removing the follower from database");
 
-        UserFollowing uf = this.ufr.findByUserUserIdAndFollowingUserId(userId, followingId);
+        UserFollowing uf = this.ufr.findByUserUserIdAndFollowingUserId(userId, currentId);
 
         if(uf==null){
             log.error("Error in unfollow or user is already unfollow");
@@ -77,6 +87,22 @@ public class UserFollowingServiceImpl implements UserFollowingService {
         }
         for(UserFollowing user : uf){
             users.add(user.getFollowing());
+        }
+        return users;
+    }
+
+    @Override
+    public List<User> fetchAllFollowers(String userId) {
+        List<User> users = new ArrayList<>();
+
+        List<UserFollower> ufr = this.ufrr.findAllByUserUserId(userId);
+
+        if(ufr==null){
+            log.error("No user following Found");
+            return null;
+        }
+        for(UserFollower user : ufr){
+            users.add(user.getFollower());
         }
         return users;
     }

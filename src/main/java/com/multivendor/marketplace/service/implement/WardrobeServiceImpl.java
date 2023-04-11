@@ -3,7 +3,6 @@ package com.multivendor.marketplace.service.implement;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.catalina.webresources.WarResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

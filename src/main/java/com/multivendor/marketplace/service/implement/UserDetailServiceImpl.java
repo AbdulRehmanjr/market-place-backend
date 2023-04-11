@@ -1,9 +1,9 @@
 package com.multivendor.marketplace.service.implement;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Set;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.multivendor.marketplace.model.Role;
 import com.multivendor.marketplace.model.User;
-import com.multivendor.marketplace.repository.RoleRepository;
+
 import com.multivendor.marketplace.repository.UserRepository;
 
 @Service

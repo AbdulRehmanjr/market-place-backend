@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multivendor.marketplace.model.Product;
 import com.multivendor.marketplace.service.ProductService;
 
+import jakarta.websocket.server.PathParam;
+
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -34,7 +35,7 @@ public class ProductController {
 
     
     @PostMapping("/save")
-    public ResponseEntity<String> saveFile(@RequestParam("file") MultipartFile[] savefile,String product) throws IOException{
+    public ResponseEntity<String> saveFile(@RequestParam("image1") MultipartFile image1,@PathParam("image2") MultipartFile image2,String product) throws IOException{
 
     log.info("Saving the Product with iamges");
 
@@ -42,8 +43,8 @@ public class ProductController {
     ObjectMapper objectMapper = new ObjectMapper();
     n_product = objectMapper.readValue(product, Product.class);
     
-    n_product.setImage1(savefile[0].getBytes());
-    n_product.setImage2(savefile[1].getBytes());
+    n_product.setImage1(image1.getBytes());
+    n_product.setImage2(image2.getBytes());
     
     n_product = this.productService.addProduct(n_product);
     if(n_product==null){

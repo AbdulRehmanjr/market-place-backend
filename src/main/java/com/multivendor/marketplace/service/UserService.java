@@ -2,7 +2,7 @@ package com.multivendor.marketplace.service;
 
 import java.util.List;
 
-import com.multivendor.marketplace.dto.UserDto;
+
 import com.multivendor.marketplace.model.Role;
 import com.multivendor.marketplace.model.User;
 

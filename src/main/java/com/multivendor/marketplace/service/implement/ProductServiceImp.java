@@ -34,8 +34,13 @@ public class ProductServiceImp implements ProductService {
     public Product addProduct(Product product) {
 
         log.info("Saving the New Product");
-
-        Category category = this.categoryRepository.findById(product.getCategory().getCategoryId()).get();
+        Category category = new Category();
+        try {
+           category = this.categoryRepository.findById(product.getCategory().getCategoryId()).get();    
+        } catch (Exception e) {
+            log.error("No Catgeory with given id");
+        }
+        
 
         Wardrobe wardrobe = this.wardrobeRepository.findById(product.
         getWardrobe().getId()).get();

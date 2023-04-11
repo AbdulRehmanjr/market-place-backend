@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.multivendor.marketplace.dto.UserDto;
+
 import com.multivendor.marketplace.model.User;
 import com.multivendor.marketplace.model.Wardrobe;
 import com.multivendor.marketplace.service.UserService;

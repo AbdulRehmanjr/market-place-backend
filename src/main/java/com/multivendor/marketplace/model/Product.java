@@ -2,10 +2,9 @@ package com.multivendor.marketplace.model;
 
 import java.util.Arrays;
 
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
@@ -23,11 +22,11 @@ public class Product {
     private String basePrice;
 
     @Lob
-    @Column(length = 10240)
+@Column(columnDefinition = "LONGBLOB")
     private byte[] image1;
 
     @Lob
-    @Column(length = 10240)
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] image2;
 
     private String description;

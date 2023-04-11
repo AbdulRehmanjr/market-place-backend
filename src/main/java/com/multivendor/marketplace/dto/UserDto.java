@@ -1,10 +1,10 @@
 package com.multivendor.marketplace.dto;
 
 import java.util.Arrays;
-import java.util.Set;
+
 
 import com.multivendor.marketplace.model.Role;
-import com.multivendor.marketplace.model.User;
+
 
 public class UserDto {
     

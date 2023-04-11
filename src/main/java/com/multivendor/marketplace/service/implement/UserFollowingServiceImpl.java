@@ -13,7 +13,6 @@ import com.multivendor.marketplace.model.UserFollowing;
 import com.multivendor.marketplace.repository.UserFollowerRepository;
 import com.multivendor.marketplace.repository.UserFollowingRepository;
 import com.multivendor.marketplace.repository.UserRepository;
-import com.multivendor.marketplace.service.UserFollowerService;
 import com.multivendor.marketplace.service.UserFollowingService;
 
 import lombok.extern.slf4j.Slf4j;

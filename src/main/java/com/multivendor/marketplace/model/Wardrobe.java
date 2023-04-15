@@ -5,6 +5,7 @@ package com.multivendor.marketplace.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 
@@ -24,9 +25,12 @@ public class Wardrobe {
 
     private String description;
     
+    private String code;
+    
     @ManyToOne
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "wardrobe")
     private Set<Product> products;
 
@@ -62,9 +66,28 @@ public class Wardrobe {
         this.user = user;
     }
 
+
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
     @Override
     public String toString() {
-        return "Wardrobe [id=" + id + ", title=" + title + ", description=" + description + ", user=" + user + "]";
+        return "Wardrobe [id=" + id + ", title=" + title + ", description=" + description + ", code=" + code + ", user="
+                + user + "]";
     }
 
         

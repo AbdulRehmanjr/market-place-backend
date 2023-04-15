@@ -22,13 +22,13 @@ import lombok.extern.slf4j.Slf4j;
 public class UserFollowingServiceImpl implements UserFollowingService {
 
     @Autowired
-    private UserFollowingRepository ufr;
+    private UserFollowingRepository userFollowingRepository;
 
     @Autowired
     private UserRepository userRepo;
 
     @Autowired
-    private UserFollowerRepository ufrr;
+    private UserFollowerRepository userFollowerRepository;
 
     @Override
     public void followUser(String currentId,String userId)   {
@@ -56,21 +56,36 @@ public class UserFollowingServiceImpl implements UserFollowingService {
         ufr.setId(follower);
         ufr.setFollower(currentUser);
         ufr.setUser(followingUser);
-        this.ufrr.save(ufr);
-        this.ufr.save(uf);  
+        this.userFollowerRepository.save(ufr);
+        this.userFollowingRepository.save(uf);  
     }
 
     @Override
     public void unfollowUser(String currentId,String userId) {
-        log.info("Removing the follower from database");
+        
+        log.info("Removing user from following list");
 
-        UserFollowing uf = this.ufr.findByUserUserIdAndFollowingUserId(userId, currentId);
+        //* curent user which is mainly the loged in user
+        User currentUser = this.userRepo.findById(currentId).get();
+        //*  other users 
+        User followingUser = this.userRepo.findById(userId).get();
 
-        if(uf==null){
-            log.error("Error in unfollow or user is already unfollow");
+        if(currentUser==null || followingUser ==null){
+            log.error("Error user or follower not avaible");
+        }
+        //* login user is follower of it
+        UserFollower userFollower = this.userFollowerRepository.findByUserUserIdAndFollowerUserId(userId,currentId);
+        //* loged user is following of it
+        UserFollowing userFollowing = this.userFollowingRepository.findByUserUserIdAndFollowingUserId(currentId,userId);
+        
+        if(userFollower==null || userFollowing==null){
+            log.error("Error user or follower not avaible");
             return;
         }
-        this.ufr.deleteById(uf.getId());
+
+        //! Deleting the follower following relationship
+        this.userFollowerRepository.delete(userFollower);
+        this.userFollowingRepository.delete(userFollowing);
     }
 
     @Override
@@ -78,7 +93,7 @@ public class UserFollowingServiceImpl implements UserFollowingService {
 
         List<User> users = new ArrayList<>();
 
-        List<UserFollowing> uf = this.ufr.findAllByUserUserId(userId);
+        List<UserFollowing> uf = this.userFollowingRepository.findAllByUserUserId(userId);
 
         if(uf==null){
             log.error("No user following Found");
@@ -94,7 +109,7 @@ public class UserFollowingServiceImpl implements UserFollowingService {
     public List<User> fetchAllFollowers(String userId) {
         List<User> users = new ArrayList<>();
 
-        List<UserFollower> ufr = this.ufrr.findAllByUserUserId(userId);
+        List<UserFollower> ufr = this.userFollowerRepository.findAllByUserUserId(userId);
 
         if(ufr==null){
             log.error("No user following Found");

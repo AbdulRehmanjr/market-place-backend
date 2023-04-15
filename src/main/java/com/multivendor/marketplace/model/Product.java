@@ -3,6 +3,7 @@ package com.multivendor.marketplace.model;
 import java.util.Arrays;
 
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -30,6 +31,9 @@ public class Product {
     private byte[] image2;
 
     private String description;
+
+
+    private String status="INSTOCK";
 
     private Double reviews = 0.0;
 
@@ -112,10 +116,19 @@ public class Product {
         this.wardrobe = wardrobe;
     }
 
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Product [productId=" + productId + ", productName=" + productName + ", basePrice=" + basePrice
-                + ", image1=" + Arrays.toString(image1) + ", image2=" + Arrays.toString(image2) + ", description="
+                +", description="
                 + description + ", reviews=" + reviews + ", category=" + category + ", wardrobe=" + wardrobe + "]";
     }
 

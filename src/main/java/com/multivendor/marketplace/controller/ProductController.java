@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.multivendor.marketplace.dto.ProductDto;
+import com.multivendor.marketplace.dto.UserDto;
+import com.multivendor.marketplace.dto.WardrobeDto;
 import com.multivendor.marketplace.model.Product;
 import com.multivendor.marketplace.service.ProductService;
 
@@ -64,9 +67,28 @@ public class ProductController {
         List<Product> products = this.productService.getAllProducts();
 
         if(products == null){
-            return ResponseEntity.badRequest().body("PRoducts Fetching error");
+            return ResponseEntity.badRequest().body("Products Fetching error");
         }        
-        return ResponseEntity.status(200).body(products);
+        List<ProductDto> productsDto;
+        
+        productsDto = products.stream().map(
+            product -> new ProductDto(
+                product.getProductId(),
+                product.getProductName(),
+                product.getBasePrice(),
+                product.getImage1(),
+                product.getImage2(),
+                product.getDescription(),
+                product.getStatus(),
+                product.getReviews(),
+                product.getCategory(),
+                new WardrobeDto(
+                    product.getWardrobe().getId(), product.getWardrobe().getTitle(),  product.getWardrobe().getDescription(),  product.getWardrobe().getCode(), 
+                    new UserDto(product.getWardrobe().getUser().getUserId(),product.getWardrobe().getUser().getUserName(),product.getWardrobe().getUser().getEmail(),product.getWardrobe().getUser().getProfilePicture(),product.getWardrobe().getUser().getRole())
+                    )
+            )
+        ).toList();
+        return ResponseEntity.status(200).body(productsDto);
     }
 
     @GetMapping("/{productId}")
@@ -82,6 +104,8 @@ public class ProductController {
 
         return ResponseEntity.status(200).body(product);
     }
+
+
     @GetMapping("/wardrobe/{wardrobeId}")
     ResponseEntity<?> getAllProductsByWardrobeId(@PathVariable String wardrobeId){
 
@@ -89,11 +113,33 @@ public class ProductController {
 
         List<Product> products = this.productService.getAllProductsByWardrobeId(wardrobeId);
 
+        
         if(products == null){
             log.error("Products not found");
             return ResponseEntity.badRequest().body("Error");
         }
-        return ResponseEntity.status(200).body(products);
+        //! converting product into its Dto
+        List<ProductDto> productsDto;
+        
+        productsDto = products.stream().map(
+            product -> new ProductDto(
+                product.getProductId(),
+                product.getProductName(),
+                product.getBasePrice(),
+                product.getImage1(),
+                product.getImage2(),
+                product.getDescription(),
+                product.getStatus(),
+                product.getReviews(),
+                product.getCategory(),
+                new WardrobeDto(
+                    product.getWardrobe().getId(), product.getWardrobe().getTitle(),  product.getWardrobe().getDescription(),  product.getWardrobe().getCode(), 
+                    new UserDto(product.getWardrobe().getUser().getUserId(),product.getWardrobe().getUser().getUserName(),product.getWardrobe().getUser().getEmail(),product.getWardrobe().getUser().getProfilePicture(),product.getWardrobe().getUser().getRole())
+                    )
+            )
+        ).toList();
+        
+        return ResponseEntity.status(200).body(productsDto);
     }
 
     @PutMapping("/update")

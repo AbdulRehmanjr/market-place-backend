@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.multivendor.marketplace.dto.UserDto;
 import com.multivendor.marketplace.model.User;
 import com.multivendor.marketplace.service.UserFollowingService;
 
@@ -36,6 +37,17 @@ public class UserFollowingController {
         return ResponseEntity.status(200).body("Followed");
     }
 
+    @PostMapping("/user/{currentId}/unfollow/{userId}")
+    ResponseEntity<?> unfollowUser(@PathVariable String currentId,@PathVariable String userId) {
+
+        log.info("/POST : making unfollow request");
+
+       
+            this.ufs.unfollowUser(currentId,userId);
+       
+        return ResponseEntity.status(200).body("unfollowed");
+    }
+
     @GetMapping("/user/following/{userId}")
     ResponseEntity<?> getAllFollowing(@PathVariable String userId) {
         log.info("/GET : get all following");
@@ -45,7 +57,13 @@ public class UserFollowingController {
         if(users == null){
             return ResponseEntity.status(200).body("No following found.");
         }
-        return ResponseEntity.status(200).body(users);
+
+        //! Converting the user model into user dto
+        List<UserDto> dtos;
+                dtos = users.stream().map(u -> new UserDto(u.getUserId(),u.getUserName(),u.getEmail(),u.getProfilePicture(),u.getRole())).toList();
+        
+        return ResponseEntity.status(200).body(dtos);
+        
     }
 
     @GetMapping("/user/follower/{userId}")
@@ -57,6 +75,10 @@ public class UserFollowingController {
             log.info("Error no follower found");
             return ResponseEntity.status(200).body("No follower found.");
         }
-        return ResponseEntity.status(200).body(users);
+ 
+        //! Converting the user model into user dto
+        List<UserDto> dtos;
+                dtos = users.stream().map(u -> new UserDto(u.getUserId(),u.getUserName(),u.getEmail(),u.getProfilePicture(),u.getRole())).toList();
+        return ResponseEntity.status(200).body(dtos);
     }
 }

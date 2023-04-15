@@ -59,23 +59,29 @@ public class ProductServiceImp implements ProductService {
     public Product updateProduct(Product product) {
 
         log.info("Updating the product");
+
         Product old = this.productRepository.findById(product.getProductId()).get();
 
+        if(old==null){
+            log.info("Product not Found");
+            return null;
+        }
         if(product.getBasePrice()!=null){
             old.setBasePrice(product.getBasePrice());
         }
 
+        if(product.getProductName()!=null){
+            old.setProductName(product.getProductName());
+        }
         if(product.getDescription()!=null){
             old.setDescription(product.getDescription());
         }
         if(product.getReviews()!=null){
             old.setReviews(product.getReviews());
         }
-        if(old==null){
-            log.info("Product not Found");
-            return null;
+        if(product.getStatus()!=null){
+            old.setStatus(product.getStatus());
         }
-
         return this.productRepository.save(old);
     }
 
@@ -105,12 +111,12 @@ public class ProductServiceImp implements ProductService {
     @Override
     public List<Product> getAllProducts() {
 
-        log.info("Geting all Products");
+        log.info("Fetching products from database.");
         
         List<Product> products = this.productRepository.findAll();
 
         if (products == null) {
-            log.error("No product with given category");
+            log.error("No product  found");
             return null;
         }
 

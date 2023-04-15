@@ -15,11 +15,7 @@ public class UserDto {
     private byte[] profilePicture;
 
     private Role role;
-
-    // private Set<User> following;
-
-    // private Set<User> followers;
-
+    
     public UserDto(String userId, String userName, String email, byte[] profilePicture, Role role) {
         this.userId = userId;
         this.userName = userName;
@@ -76,6 +72,7 @@ public class UserDto {
         this.role = role;
     }
 
+  
     @Override
     public String toString() {
         return "UserDto [userId=" + userId + ", userName=" + userName + ", email=" + email + ", profilePicture="
